@@ -22,16 +22,19 @@ Selain itu, proyek ini juga menyoroti pentingnya mengatasi masalah ketidakseimba
 ## Business Understanding
 
 ### Problem Statements
+Sebelum memulai proyek, beberapa pertanyaan penting yang akan dijawab melalui model :
 1. Bagaimana cara membangun model machine learning yang mampu memprediksi diabetes secara akurat?
 2. Bagaimana mengatasi ketidakseimbangan kelas pada dataset medis agar hasil prediksi tidak bias?
 3. Algoritma mana yang memberikan hasil terbaik dalam konteks prediksi ini?
 
 ### Goals
+Dengan menjawab problem statements di atas, proyek menetapkan target berikut:
 1. Menghasilkan model klasifikasi prediktif terhadap risiko diabetes berdasarkan data pasien.
 2. Meningkatkan kualitas prediksi melalui penyeimbangan data menggunakan SMOTE.
 3. Melakukan tuning hyperparameter untuk memperoleh performa model optimal.
 
 ### Solution Statement
+Solusi yang dipilih meliputi:
 - Melatih dan membandingkan beberapa algoritma: Logistic Regression, Random Forest, dan XGBoost.
 - Menerapkan Synthetic Minority Oversampling Technique (SMOTE) untuk mengatasi ketidakseimbangan kelas.
 - Meningkatkan performa dengan Grid Search pada Random Forest.
@@ -58,6 +61,7 @@ Dataset ini terdiri dari 768 entri pasien dan 9 kolom, termasuk target klasifika
 | Outcome                  | Integer   | Target (1 = diabetes, 0 = tidak diabetes)                         |
 
 ### Exploratory Data Analysis (EDA)
+Analisis awal dataset mengungkapkan beberapa hal penting:
 - Fitur `Glucose`, `Insulin`, dan `SkinThickness` mengandung nilai nol, yang secara medis tidak valid dan perlu ditangani.
 - Outcome tidak seimbang, berpotensi menyebabkan bias pada model.
 - Korelasi tertinggi terhadap Outcome ditemukan pada fitur `Glucose`, `BMI`, dan `Age`.
@@ -65,7 +69,7 @@ Dataset ini terdiri dari 768 entri pasien dan 9 kolom, termasuk target klasifika
 ---
 
 ## Data Preparation
-
+Pada tahap ini, data dipersiapkan agar siap digunakan untuk pelatihan model. Beberapa proses utama meliputi:
 1. **Data Cleaning**: Nilai nol pada fitur medis diganti dengan median.
 2. **Feature Selection**: Menghapus fitur dengan kontribusi rendah seperti `BloodPressure` dan `SkinThickness`.
 3. **Scaling**: Menggunakan `StandardScaler` untuk standardisasi fitur.
@@ -75,7 +79,8 @@ Dataset ini terdiri dari 768 entri pasien dan 9 kolom, termasuk target klasifika
 
 ## Modeling
 
-### Algoritma yang Digunakan:
+### Algoritma yang Digunakan
+Untuk membangun model prediksi, beberapa algoritma dipilih dan diuji, yaitu:
 - **Logistic Regression**: Sebagai baseline model.
 - **Random Forest**: Model ensemble yang kuat dan interpretatif.
 - **XGBoost**: Gradient boosting yang dikenal sangat kompetitif.
@@ -83,6 +88,7 @@ Dataset ini terdiri dari 768 entri pasien dan 9 kolom, termasuk target klasifika
 - **Random Forest + GridSearch**: Hyperparameter tuning untuk mendapatkan kinerja optimal.
 
 ### Tuning Parameter (GridSearch):
+Beberapa parameter Random Forest dioptimasi menggunakan Grid Search:
 - `n_estimators`: [100, 200]
 - `max_depth`: [4, 6, 8]
 - `min_samples_split`: [2, 4]
@@ -92,6 +98,7 @@ Dataset ini terdiri dari 768 entri pasien dan 9 kolom, termasuk target klasifika
 ## Evaluation
 
 ### Metrik Evaluasi
+Model dievaluasi menggunakan metrik berikut:
 - **Accuracy**: Persentase prediksi yang benar.
 - **Precision**: Proporsi prediksi positif yang benar-benar positif.
 - **Recall**: Proporsi kasus positif yang berhasil diprediksi dengan benar.
@@ -113,7 +120,7 @@ Dataset ini terdiri dari 768 entri pasien dan 9 kolom, termasuk target klasifika
 ---
 
 ## Insight dan Analisis
-
+Dari hasil evaluasi, dapat diambil beberapa analisis penting, yaitu :
 - **Random Forest (Grid Search)** menunjukkan performa terbaik secara keseluruhan dengan akurasi tertinggi (77%) dan F1-score terbaik (0.72), menandakan keseimbangan antara precision dan recall yang lebih baik. Model ini juga memiliki recall yang sangat tinggi (0.84), yang berarti mampu mendeteksi kasus positif diabetes lebih banyak dibanding model lain. Ini penting untuk kasus medis agar meminimalkan false negative.
 
 - **XGBoost + SMOTE** memberikan peningkatan recall (0.75) dibanding XGBoost biasa (0.71), menunjukkan bahwa teknik penyeimbangan data (SMOTE) efektif dalam meningkatkan sensitivitas model terhadap kelas minoritas.
