@@ -115,6 +115,10 @@ Model dievaluasi menggunakan metrik berikut:
 | XGBoost + SMOTE     | 0.75     | 0.62      | 0.75   | 0.68     | 0.81    |
 | Random Forest (Grid)| 0.77     | 0.63      | 0.84   | 0.72     | 0.84    |
 
+### Confusion Matrix Model Terbaik: Random Forest (Grid Search)
+
+Untuk memberikan gambaran lebih visual terkait performa model terbaik (Random Forest dengan tuning) digunakan confusion matriks yang menunjukkan bahwa model mampu mengklasifikasikan mayoritas kelas negatif (72 benar vs 27 salah) dan positif (46 benar vs 9 salah) secara cukup akurat.
+
 > Catatan: Nilai metrik di atas merupakan hasil pada data uji setelah training dan tuning model dilakukan.
 
 ---
