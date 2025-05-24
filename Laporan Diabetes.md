@@ -62,13 +62,14 @@ Dataset ini terdiri dari 768 entri pasien dan 9 kolom, termasuk target klasifika
 
 ### Exploratory Data Analysis (EDA)
 Untuk mengetahui kondisi data yang ada kami melakukan EDA untuk memeriksa :
-- missing value dan duplicate data
-- korelasi antar fitur numerik
-- distribusi kolom 'outcome' dan fitur numerik lainnya
-- boxplot fitur terhadap 'outcome'
+- Missing value dan duplicate data
+- Visualisasi korelasi antar fitur numerik
+- Visualisasi distribusi kolom 'outcome' dan fitur numerik lainnya
+- Visualisasi boxplot fitur terhadap 'outcome'
   
 Analisis awal dataset mengungkapkan beberapa hal penting:
 - Fitur `Glucose`, `Insulin`, dan `SkinThickness` mengandung nilai nol, yang secara medis tidak valid dan perlu ditangani.
+- Fitur `Glucose`, `BMI`, dan `Age` merupakan prediktor paling signifikan dalam model.
 - Outcome tidak seimbang, berpotensi menyebabkan bias pada model.
 - Korelasi tertinggi terhadap Outcome ditemukan pada fitur `Glucose`, `BMI`, dan `Age`.
 
@@ -81,6 +82,8 @@ Pada tahap ini, data dipersiapkan agar siap digunakan untuk pelatihan model. Beb
 3. **Scaling**: Menggunakan `StandardScaler` untuk standardisasi fitur.
 4. **Splitting**: Membagi dataset menjadi 80% training dan 20% testing.
 
+Setiap tahapan di atas memiliki tujuan penting dalam memastikan data yang digunakan berkualitas tinggi dan relevan untuk pelatihan model. Penggantian nilai nol dengan median dilakukan karena nilai nol pada fitur medis seperti glukosa dan insulin tidak realistis secara medis dan dapat dianggap sebagai missing value. Median dipilih sebagai pengganti karena lebih tahan terhadap outlier dibandingkan rata-rata. Selanjutnya, proses feature selection dilakukan untuk mengurangi kompleksitas model dan menghindari overfitting dengan hanya mempertahankan fitur yang paling berpengaruh terhadap target. Standardisasi data melalui scaling diperlukan agar semua fitur memiliki skala yang setara, terutama karena beberapa algoritma sangat sensitif terhadap perbedaan skala. Terakhir, pemisahan data menjadi data latih dan data uji memungkinkan evaluasi objektif terhadap performa model terhadap data yang belum pernah dilihat sebelumnya, yang merupakan langkah penting dalam mengukur kemampuan generalisasi model.
+
 ---
 
 ## Modeling
@@ -88,10 +91,20 @@ Pada tahap ini, data dipersiapkan agar siap digunakan untuk pelatihan model. Beb
 ### Algoritma yang Digunakan
 Untuk membangun model prediksi, beberapa algoritma dipilih dan diuji, yaitu:
 - **Logistic Regression**: Sebagai baseline model.
+  Kelebihan: Sederhana, cepat dilatih, dan mudah diinterpretasikan. Cocok sebagai baseline.
+  Kekurangan: Tidak menangkap hubungan non-linear dengan baik dan kurang fleksibel untuk data kompleks.
 - **Random Forest**: Model ensemble yang kuat dan interpretatif.
+  Kelebihan: Tahan terhadap overfitting, dapat menangani data non-linear dan fitur penting bisa diinterpretasikan.
+  Kekurangan: Lebih lambat dibanding model linier dan kurang efisien dalam hal memori.
 - **XGBoost**: Gradient boosting yang dikenal sangat kompetitif.
+  Kelebihan: Akurasi tinggi, menangani missing value, dan sangat kuat untuk berbagai jenis data.
+  Kekurangan: Lebih kompleks, tuning parameter memerlukan waktu lebih banyak.
 - **XGBoost + SMOTE**: Menambahkan SMOTE untuk menyeimbangkan data sebelum pelatihan.
+  Kelebihan: Meningkatkan recall dan performa untuk kelas minoritas karena menangani imbalance data.
+  Kekurangan: Risiko overfitting karena data sintetis, serta waktu pelatihan bertambah.
 - **Random Forest + GridSearch**: Hyperparameter tuning untuk mendapatkan kinerja optimal.
+  Kelebihan: Performa meningkat signifikan setelah tuning, keseimbangan recall dan precision sangat baik.
+  Kekurangan: Proses tuning memakan waktu dan komputasi lebih berat.
 
 ### Tuning Parameter (GridSearch):
 Beberapa parameter Random Forest dioptimasi menggunakan Grid Search:
@@ -105,11 +118,33 @@ Beberapa parameter Random Forest dioptimasi menggunakan Grid Search:
 
 ### Metrik Evaluasi
 Model dievaluasi menggunakan metrik berikut:
-- **Accuracy**: Persentase prediksi yang benar.
-- **Precision**: Proporsi prediksi positif yang benar-benar positif.
-- **Recall**: Proporsi kasus positif yang berhasil diprediksi dengan benar.
-- **F1-score**: Harmonik rata-rata precision dan recall.
-- **AUC-ROC**: Kemampuan model membedakan antara dua kelas.
+- **Accuracy**  
+  $$
+  \text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN}
+  $$  
+  Mengukur proporsi prediksi yang benar dari seluruh kasus yang diamati.
+
+- **Precision**  
+  $$
+  \text{Precision} = \frac{TP}{TP + FP}
+  $$  
+  Mengukur seberapa banyak dari prediksi positif yang benar-benar positif (menghindari false positive).
+
+- **Recall (Sensitivity)**  
+  $$
+  \text{Recall} = \frac{TP}{TP + FN}
+  $$  
+  Mengukur seberapa banyak kasus positif yang berhasil dideteksi (menghindari false negative).
+
+- **F1-score**  
+  $$
+  \text{F1-score} = 2 \cdot \frac{\text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}
+  $$  
+  Rata-rata harmonik dari precision dan recall. Cocok digunakan ketika ada ketidakseimbangan kelas.
+
+- **AUC-ROC**  
+  AUC (Area Under the Curve) dari ROC (Receiver Operating Characteristic) menggambarkan kemampuan model dalam membedakan kelas positif dan negatif.  
+  Semakin mendekati nilai 1, semakin baik performa klasifikasi model terhadap kedua kelas.
 
 ### Ringkasan Hasil Evaluasi
 
@@ -129,7 +164,7 @@ Untuk memberikan gambaran lebih visual terkait performa model terbaik (Random Fo
 
 ---
 
-## Insight dan Analisis
+## Insight dan Analisis Model
 Dari hasil evaluasi, dapat diambil beberapa analisis penting, yaitu :
 - **Random Forest (Grid Search)** menunjukkan performa terbaik secara keseluruhan dengan akurasi tertinggi (77%) dan F1-score terbaik (0.72), menandakan keseimbangan antara precision dan recall yang lebih baik. Model ini juga memiliki recall yang sangat tinggi (0.84), yang berarti mampu mendeteksi kasus positif diabetes lebih banyak dibanding model lain. Ini penting untuk kasus medis agar meminimalkan false negative.
 
@@ -138,8 +173,6 @@ Dari hasil evaluasi, dapat diambil beberapa analisis penting, yaitu :
 - **Logistic Regression** memiliki akurasi yang cukup baik (0.76). Namun, nilai recall dan F1-score-nya masih lebih rendah dibanding Random Forest Grid, sehingga kurang optimal untuk mendeteksi semua kasus positif.
 
 - AUC-ROC pada semua model relatif baik, berkisar antara 0.79 sampai 0.84, menandakan bahwa semua model memiliki kemampuan cukup baik dalam membedakan antara kelas positif dan negatif. Metrik AUC-ROC menunjukkan seluruh model memiliki kemampuan diskriminasi yang baik.
-  
-- Fitur `Glucose`, `BMI`, dan `Age` merupakan prediktor paling signifikan dalam model.
 
 ---
 
