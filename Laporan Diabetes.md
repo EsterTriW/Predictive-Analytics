@@ -61,6 +61,12 @@ Dataset ini terdiri dari 768 entri pasien dan 9 kolom, termasuk target klasifika
 | Outcome                  | Integer   | Target (1 = diabetes, 0 = tidak diabetes)                         |
 
 ### Exploratory Data Analysis (EDA)
+Untuk mengetahui kondisi data yang ada kami melakukan EDA untuk memeriksa :
+- missing value dan duplicate data
+- korelasi antar fitur numerik
+- distribusi kolom 'outcome' dan fitur numerik lainnya
+- boxplot fitur terhadap 'outcome'
+  
 Analisis awal dataset mengungkapkan beberapa hal penting:
 - Fitur `Glucose`, `Insulin`, dan `SkinThickness` mengandung nilai nol, yang secara medis tidak valid dan perlu ditangani.
 - Outcome tidak seimbang, berpotensi menyebabkan bias pada model.
