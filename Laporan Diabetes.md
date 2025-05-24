@@ -119,27 +119,19 @@ Beberapa parameter Random Forest dioptimasi menggunakan Grid Search:
 ### Metrik Evaluasi
 Model dievaluasi menggunakan metrik berikut:
 - **Accuracy**  
-  $$
-  \text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN}
-  $$  
+  Accuracy = (TP + TN) / (TP + TN + FP + FN)  
   Mengukur proporsi prediksi yang benar dari seluruh kasus yang diamati.
 
 - **Precision**  
-  $$
-  \text{Precision} = \frac{TP}{TP + FP}
-  $$  
+  Precision = TP / (TP + FP)  
   Mengukur seberapa banyak dari prediksi positif yang benar-benar positif (menghindari false positive).
 
 - **Recall (Sensitivity)**  
-  $$
-  \text{Recall} = \frac{TP}{TP + FN}
-  $$  
+  Recall = TP / (TP + FN)  
   Mengukur seberapa banyak kasus positif yang berhasil dideteksi (menghindari false negative).
 
 - **F1-score**  
-  $$
-  \text{F1-score} = 2 \cdot \frac{\text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}
-  $$  
+  F1-score = 2 * (Precision * Recall) / (Precision + Recall)  
   Rata-rata harmonik dari precision dan recall. Cocok digunakan ketika ada ketidakseimbangan kelas.
 
 - **AUC-ROC**  
