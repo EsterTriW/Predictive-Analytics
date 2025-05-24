@@ -1,16 +1,20 @@
-# Laporan Proyek Machine Learning - [Nama Anda]
+# Laporan Proyek Machine Learning 
+## Ditulis oleh : Ester Tri Wahyuningsih -  MC002D5X0841
 
 ## Domain Proyek
+### Latar Belakang
+Diabetes melitus merupakan penyakit kronis yang ditandai dengan tingginya kadar gula darah akibat gangguan produksi atau fungsi insulin. Menurut Organisasi Kesehatan Dunia (WHO), diabetes termasuk salah satu penyakit tidak menular dengan prevalensi yang terus meningkat secara global, bahkan mencapai status epidemi di berbagai negara, khususnya di negara berkembang.
 
-**Deteksi Dini Diabetes Menggunakan Machine Learning**
+Data dari International Diabetes Federation (IDF) pada tahun 2021 menunjukkan bahwa sekitar 537 juta orang di seluruh dunia hidup dengan diabetes, dan hampir separuh dari mereka belum terdiagnosis atau menerima perawatan yang memadai. Kondisi ini berpotensi menyebabkan komplikasi serius seperti penyakit jantung, stroke, kerusakan ginjal, hingga kebutaan, yang tidak hanya membebani kualitas hidup penderita tapi juga sistem pelayanan kesehatan.
 
-Diabetes melitus adalah salah satu penyakit kronis yang menjadi ancaman global terhadap kesehatan masyarakat. Organisasi Kesehatan Dunia (WHO) menyatakan bahwa diabetes menjadi penyebab kematian utama yang meningkat secara signifikan dalam dua dekade terakhir. Deteksi dini sangat krusial untuk mencegah komplikasi jangka panjang dan menurunkan beban sistem kesehatan.
+Deteksi dini diabetes sangat penting untuk melakukan intervensi preventif dan manajemen penyakit yang efektif. Namun, skrining massal secara tradisional sering terkendala oleh sumber daya medis yang terbatas dan biaya tinggi. Oleh sebab itu, pendekatan berbasis teknologi informasi dan machine learning menjadi alternatif yang sangat menjanjikan.
 
-Seiring dengan berkembangnya teknologi, pendekatan berbasis data seperti Machine Learning menawarkan peluang baru dalam deteksi awal diabetes. Proyek ini bertujuan untuk membangun sistem klasifikasi yang dapat memprediksi kemungkinan seseorang menderita diabetes berdasarkan parameter medis dasar.
+Machine learning memungkinkan analisis data medis yang besar dan kompleks untuk menemukan pola dan prediksi risiko penyakit secara akurat dan efisien. Dengan memanfaatkan data klinis dasar seperti usia, indeks massa tubuh (BMI), kadar glukosa, dan riwayat keluarga, model prediksi diabetes dapat membantu tenaga medis dalam mengambil keputusan lebih cepat dan tepat sasaran.
 
-### Mengapa Masalah Ini Penting
+### Tujuan Proyek
+Proyek ini bertujuan untuk mengembangkan model klasifikasi berbasis machine learning yang mampu memprediksi risiko diabetes secara akurat dan dapat diandalkan. Model ini diharapkan dapat digunakan sebagai alat bantu skrining awal, terutama di wilayah dengan keterbatasan akses layanan kesehatan, sehingga dapat meningkatkan deteksi dini dan mengurangi beban komplikasi akibat diabetes.
 
-Menurut *IDF Diabetes Atlas* (2021), lebih dari 537 juta orang hidup dengan diabetes di seluruh dunia, dan hampir setengahnya tidak terdiagnosis. Hal ini membuka peluang besar bagi teknologi prediktif untuk membantu skrining massal berbasis data klinis.
+Selain itu, proyek ini juga menyoroti pentingnya mengatasi masalah ketidakseimbangan data pada dataset medis, serta melakukan optimalisasi model melalui tuning hyperparameter agar menghasilkan prediksi yang lebih baik
 
 ---
 
