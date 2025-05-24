@@ -9,7 +9,7 @@ Data dari International Diabetes Federation (IDF) pada tahun 2021 menunjukkan ba
 
 Deteksi dini diabetes sangat penting untuk melakukan intervensi preventif dan manajemen penyakit yang efektif. Namun, skrining massal secara tradisional sering terkendala oleh sumber daya medis yang terbatas dan biaya tinggi. Oleh sebab itu, pendekatan berbasis teknologi informasi dan machine learning menjadi alternatif yang sangat menjanjikan.
 
-Machine learning memungkinkan analisis data medis yang besar dan kompleks untuk menemukan pola dan prediksi risiko penyakit secara akurat dan efisien. Dengan memanfaatkan data klinis dasar seperti usia, indeks massa tubuh (BMI), kadar glukosa, dan riwayat keluarga, model prediksi diabetes dapat membantu tenaga medis dalam mengambil keputusan lebih cepat dan tepat sasaran.
+Machine learning membantu analisis data medis yang besar dan kompleks untuk menemukan pola dan prediksi risiko penyakit secara akurat dan efisien. Dengan memanfaatkan data klinis dasar seperti usia, indeks massa tubuh (BMI), kadar glukosa, dan riwayat keluarga, model prediksi diabetes dapat membantu tenaga medis dalam mengambil keputusan lebih cepat dan tepat sasaran.
 
 ### Tujuan Proyek
 Proyek ini bertujuan untuk mengembangkan model klasifikasi berbasis machine learning yang mampu memprediksi risiko diabetes secara akurat dan dapat diandalkan. Model ini diharapkan dapat digunakan sebagai alat bantu skrining awal, terutama di wilayah dengan keterbatasan akses layanan kesehatan, sehingga dapat meningkatkan deteksi dini dan mengurangi beban komplikasi akibat diabetes.
@@ -39,8 +39,8 @@ Selain itu, proyek ini juga menyoroti pentingnya mengatasi masalah ketidakseimba
 ---
 
 ## Data Understanding
-
-Dataset yang digunakan adalah **Pima Indians Diabetes Database**, tersedia secara publik di Kaggle dan UCI Repository. Dataset ini terdiri dari 768 entri pasien dan 9 kolom, termasuk target klasifikasi.
+Dataset yang digunakan adalah **Pima Indians Diabetes Database**, tersedia secara publik di [Kaggle](https://www.kaggle.com/datasets/uciml/pima-indians-diabetes-database?resource=download) dan UCI Repository.
+Dataset ini terdiri dari 768 entri pasien dan 9 kolom, termasuk target klasifikasi.
 
 ### Tabel Fitur Dataset
 
@@ -58,7 +58,7 @@ Dataset yang digunakan adalah **Pima Indians Diabetes Database**, tersedia secar
 
 ### Exploratory Data Analysis (EDA)
 - Fitur `Glucose`, `Insulin`, dan `SkinThickness` mengandung nilai nol, yang secara medis tidak valid dan perlu ditangani.
-- Outcome tidak seimbang (1 : 0 = 1:2), berpotensi menyebabkan bias pada model.
+- Outcome tidak seimbang, berpotensi menyebabkan bias pada model.
 - Korelasi tertinggi terhadap Outcome ditemukan pada fitur `Glucose`, `BMI`, dan `Age`.
 
 ---
@@ -101,11 +101,11 @@ Dataset yang digunakan adalah **Pima Indians Diabetes Database**, tersedia secar
 
 | Model                | Accuracy | Precision | Recall | F1-Score | AUC-ROC |
 |---------------------|----------|-----------|--------|----------|---------|
-| Logistic Regression | 0.792    | 0.75      | 0.65   | 0.69     | 0.84    |
-| Random Forest       | 0.805    | 0.76      | 0.70   | 0.73     | 0.86    |
-| XGBoost             | 0.812    | 0.77      | 0.71   | 0.74     | 0.87    |
-| XGBoost + SMOTE     | 0.795    | 0.74      | 0.76   | 0.75     | 0.86    |
-| Random Forest (Grid)| 0.825    | 0.79      | 0.74   | 0.76     | 0.88    |
+| Logistic Regression | 0.76     | 0.68      | 0.62   | 0.65     | 0.83    |
+| Random Forest       | 0.74     | 0.62      | 0.71   | 0.66     | 0.84    |
+| XGBoost             | 0.75     | 0.63      | 0.71   | 0.67     | 0.79    |
+| XGBoost + SMOTE     | 0.75     | 0.62      | 0.75   | 0.68     | 0.81    |
+| Random Forest (Grid)| 0.77     | 0.63      | 0.84   | 0.72     | 0.84    |
 
 > Catatan: Nilai metrik di atas merupakan hasil pada data uji setelah training dan tuning model dilakukan.
 
@@ -113,9 +113,14 @@ Dataset yang digunakan adalah **Pima Indians Diabetes Database**, tersedia secar
 
 ## Insight dan Analisis
 
-- **Random Forest dengan tuning** menghasilkan kinerja terbaik secara keseluruhan.
-- **XGBoost + SMOTE** memiliki recall tertinggi, menjadikannya cocok untuk kasus di mana penting untuk menangkap sebanyak mungkin kasus positif.
-- Metrik AUC-ROC menunjukkan seluruh model memiliki kemampuan diskriminasi yang baik.
+- **Random Forest (Grid Search)** menunjukkan performa terbaik secara keseluruhan dengan akurasi tertinggi (77%) dan F1-score terbaik (0.72), menandakan keseimbangan antara precision dan recall yang lebih baik. Model ini juga memiliki recall yang sangat tinggi (0.84), yang berarti mampu mendeteksi kasus positif diabetes lebih banyak dibanding model lain. Ini penting untuk kasus medis agar meminimalkan false negative.
+
+- **XGBoost + SMOTE** memberikan peningkatan recall (0.75) dibanding XGBoost biasa (0.71), menunjukkan bahwa teknik penyeimbangan data (SMOTE) efektif dalam meningkatkan sensitivitas model terhadap kelas minoritas.
+
+- **Logistic Regression** memiliki akurasi yang cukup baik (0.76). Namun, nilai recall dan F1-score-nya masih lebih rendah dibanding Random Forest Grid, sehingga kurang optimal untuk mendeteksi semua kasus positif.
+
+- AUC-ROC pada semua model relatif baik, berkisar antara 0.79 sampai 0.84, menandakan bahwa semua model memiliki kemampuan cukup baik dalam membedakan antara kelas positif dan negatif. Metrik AUC-ROC menunjukkan seluruh model memiliki kemampuan diskriminasi yang baik.
+  
 - Fitur `Glucose`, `BMI`, dan `Age` merupakan prediktor paling signifikan dalam model.
 
 ---
@@ -124,14 +129,19 @@ Dataset yang digunakan adalah **Pima Indians Diabetes Database**, tersedia secar
 
 ### Kesimpulan
 
-Proyek ini berhasil mengembangkan sistem deteksi dini diabetes menggunakan pendekatan machine learning. Dengan berbagai model yang diuji, **Random Forest dengan tuning hyperparameter** menunjukkan performa terbaik, sementara **XGBoost + SMOTE** efektif dalam meningkatkan recall.
+Proyek ini berhasil mengembangkan sistem deteksi dini diabetes menggunakan pendekatan machine learning. Dengan berbagai model yang diuji, penggunaan Random Forest dengan Grid Search hyperparameter tuning memberikan hasil paling optimal untuk prediksi diabetes pada dataset ini, khususnya dalam hal recall dan F1-score.
+
+Penerapan teknik penyeimbangan data seperti SMOTE juga membantu meningkatkan performa model, terutama dalam meningkatkan recall, sehingga lebih mampu menangkap kasus positif.
+
+Meskipun algoritma lain seperti Logistic Regression dan XGBoost juga memberikan hasil yang layak, hasil evaluasi menunjukkan bahwa kombinasi Random Forest dan tuning hyperparameter lebih unggul untuk konteks deteksi dini diabetes.
 
 ### Saran Lanjutan
 
-- Terapkan model pada dataset nyata dengan data medis lebih lengkap.
+- Fokus pengembangan selanjutnya dapat diarahkan pada optimalisasi lebih lanjut model Random Forest, termasuk eksplorasi parameter tuning yang lebih luas atau teknik ensemble lainnya.
+- Terapkan validasi model pada dataset nyata dengan data medis lebih lengkap.
 - Integrasi sistem prediksi ini dalam bentuk aplikasi dashboard untuk klinik.
 - Uji coba metode balancing lain seperti ADASYN atau undersampling.
-- Pertimbangkan interpretabilitas model untuk digunakan oleh tenaga kesehatan.
+- Lakukab interpretasi model lebih dalam untuk digunakan dan dipahami oleh tenaga kesehatan.
 
 ---
 
