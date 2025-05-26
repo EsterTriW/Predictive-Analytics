@@ -4,9 +4,9 @@
 
 ## Domain Proyek
 ### Latar Belakang
-Diabetes melitus merupakan penyakit kronis yang ditandai dengan tingginya kadar gula darah akibat gangguan produksi atau fungsi insulin. Menurut Organisasi Kesehatan Dunia (WHO), diabetes termasuk salah satu penyakit tidak menular dengan prevalensi yang terus meningkat secara global, bahkan mencapai status epidemi di berbagai negara, khususnya di negara berkembang.
+Diabetes melitus merupakan penyakit kronis yang ditandai dengan tingginya kadar gula darah akibat gangguan produksi atau fungsi insulin. Menurut Organisasi Kesehatan Dunia, World Health Organization (WHO, 2021), diabetes termasuk salah satu penyakit tidak menular dengan prevalensi yang terus meningkat secara global, bahkan mencapai status epidemi di berbagai negara, khususnya di negara berkembang.
 
-Data dari International Diabetes Federation (IDF) pada tahun 2021 menunjukkan bahwa sekitar 537 juta orang di seluruh dunia hidup dengan diabetes, dan hampir separuh dari mereka belum terdiagnosis atau menerima perawatan yang memadai. Kondisi ini berpotensi menyebabkan komplikasi serius seperti penyakit jantung, stroke, kerusakan ginjal, hingga kebutaan, yang tidak hanya membebani kualitas hidup penderita tapi juga sistem pelayanan kesehatan.
+Menurut data dari International Diabetes Federation (IDF, 2021) menunjukkan bahwa sekitar 537 juta orang di seluruh dunia hidup dengan diabetes, dan hampir separuh dari mereka belum terdiagnosis atau menerima perawatan yang memadai. Kondisi ini berpotensi menyebabkan komplikasi serius seperti penyakit jantung, stroke, kerusakan ginjal, hingga kebutaan, yang tidak hanya membebani kualitas hidup penderita tapi juga sistem pelayanan kesehatan.
 
 Deteksi dini diabetes sangat penting untuk melakukan intervensi preventif dan manajemen penyakit yang efektif. Namun, skrining massal secara tradisional sering terkendala oleh sumber daya medis yang terbatas dan biaya tinggi. Oleh sebab itu, pendekatan berbasis teknologi informasi dan machine learning menjadi alternatif yang sangat menjanjikan.
 
@@ -63,21 +63,23 @@ Dataset ini terdiri dari 768 entri pasien dan 9 kolom, termasuk target klasifika
 ### Exploratory Data Analysis (EDA)
 Untuk mengetahui kondisi data yang ada kami melakukan EDA untuk memeriksa :
 - Missing value dan duplicate data
+  Jumlah missing values (nilai kosong) pada dataset awal adalah 0 secara eksplisit, karena dataset tidak memiliki 
+  nilai kosong (NaN) dan jumlah data duplikat pada dataset awal adalah 0. Namun, terdapat nilai nol pada beberapa 
+  fitur seperti `Glucose` (5 nilai 0) , `Insulin` (374 nilai 0), `BloodPressure` (35 nilai 0), `BMI` (11 nilai 
+  0), dan `SkinThickness` (227 nilai 0) yang secara medis dianggap tidak valid dan perlu perlakuan khusus.
 - Visualisasi korelasi antar fitur numerik
-- Visualisasi distribusi kolom 'outcome' dan fitur numerik lainnya
-- Visualisasi boxplot fitur terhadap 'outcome'
-  
-Analisis awal dataset mengungkapkan beberapa hal penting:
-- Fitur `Glucose`, `Insulin`, dan `SkinThickness` mengandung nilai nol, yang secara medis tidak valid dan perlu ditangani.
-- Fitur `Glucose`, `BMI`, dan `Age` merupakan prediktor paling signifikan dalam model.
-- Outcome tidak seimbang, berpotensi menyebabkan bias pada model.
-- Korelasi tertinggi terhadap Outcome ditemukan pada fitur `Glucose`, `BMI`, dan `Age`.
-
+  Korelasi tertinggi terhadap Outcome ditemukan pada fitur `Glucose`, `BMI`, dan `Age`.
+  Korelasi rendah terhadap Outcome ditemukan pada fitur `BloodPressure` dan `SkinThickness`
+- Visualisasi distribusi kolom 'outcome'
+  Jumlah pasien **tidak diabetes** (Outcome=0): 500
+  Jumlah pasien **diabetes** (Outcome=1): 268
+- Visualisasi distribusi fitur numerik lainnya dan boxplot fitur numerik terhadap 'outcome'
+  Terdapat beberapa outlier yang dapat memberikan insight lebih pada data.
 ---
 
 ## Data Preparation
 Pada tahap ini, data dipersiapkan agar siap digunakan untuk pelatihan model. Beberapa proses utama meliputi:
-1. **Data Cleaning**: Nilai nol pada fitur medis diganti dengan median.
+1. **Data Cleaning**: Nilai nol pada fitur medis seperti pada fitur `Glucose` , `Insulin`, `BloodPressure`, `BMI`, dan `SkinThickness` diganti dengan median.
 2. **Feature Selection**: Menghapus fitur dengan kontribusi rendah seperti `BloodPressure` dan `SkinThickness`.
 3. **Scaling**: Menggunakan `StandardScaler` untuk standardisasi fitur.
 4. **Splitting**: Membagi dataset menjadi 80% training dan 20% testing.
@@ -195,7 +197,5 @@ Meskipun algoritma lain seperti Logistic Regression dan XGBoost juga memberikan 
 3. Smith, J., & Brown, L. (2020). "Machine Learning Approaches in Early Diagnosis of Diabetes." *Journal of Medical Informatics*, 12(3), pp. 102–110.
 4. Kaggle. "Pima Indians Diabetes Database." [Online]. Available: https://www.kaggle.com/datasets/uciml/pima-indians-diabetes-database
 5. Pedregosa, F., et al. (2011). "Scikit-learn: Machine Learning in Python." *Journal of Machine Learning Research*, 12, pp. 2825–2830.
-6. Chawla, N. V., et al. (2002). "SMOTE: Synthetic Minority Over-sampling Technique." *Journal of Artificial Intelligence Research*, 16, pp. 321–357.
-7. Chen, T., & Guestrin, C. (2016). "XGBoost: A Scalable Tree Boosting System." *Proceedings of the 22nd ACM SIGKDD*, pp. 785–794.
 
 ---
