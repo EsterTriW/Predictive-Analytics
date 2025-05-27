@@ -92,27 +92,81 @@ Setiap tahapan di atas memiliki tujuan penting dalam memastikan data yang diguna
 
 ### Algoritma yang Digunakan
 Untuk membangun model prediksi, beberapa algoritma dipilih dan diuji, yaitu:
-- **Logistic Regression**: Sebagai baseline model.
-  Kelebihan: Sederhana, cepat dilatih, dan mudah diinterpretasikan. Cocok sebagai baseline.
-  Kekurangan: Tidak menangkap hubungan non-linear dengan baik dan kurang fleksibel untuk data kompleks.
-- **Random Forest**: Model ensemble yang kuat dan interpretatif.
-  Kelebihan: Tahan terhadap overfitting, dapat menangani data non-linear dan fitur penting bisa diinterpretasikan.
-  Kekurangan: Lebih lambat dibanding model linier dan kurang efisien dalam hal memori.
-- **XGBoost**: Gradient boosting yang dikenal sangat kompetitif.
-  Kelebihan: Akurasi tinggi, menangani missing value, dan sangat kuat untuk berbagai jenis data.
-  Kekurangan: Lebih kompleks, tuning parameter memerlukan waktu lebih banyak.
-- **XGBoost + SMOTE**: Menambahkan SMOTE untuk menyeimbangkan data sebelum pelatihan.
-  Kelebihan: Meningkatkan recall dan performa untuk kelas minoritas karena menangani imbalance data.
-  Kekurangan: Risiko overfitting karena data sintetis, serta waktu pelatihan bertambah.
-- **Random Forest + GridSearch**: Hyperparameter tuning untuk mendapatkan kinerja optimal.
-  Kelebihan: Performa meningkat signifikan setelah tuning, keseimbangan recall dan precision sangat baik.
-  Kekurangan: Proses tuning memakan waktu dan komputasi lebih berat.
+- **Logistic Regression**:
+  Mekanisme Kerja :
+  Logistic Regression adalah model linier untuk klasifikasi biner. Model ini menghitung probabilitas kelas 
+  menggunakan fungsi sigmoid. Probabilitas tersebut kemudian dikonversi menjadi prediksi kelas. Model ini cocok 
+  sebagai baseline karena sederhana, cepat dilatih, dan mudah diinterpretasikan.
+  * Kelebihan: Sederhana, cepat dilatih, dan mudah diinterpretasikan. Cocok sebagai baseline.
+  * Kekurangan: Tidak menangkap hubungan non-linear dengan baik dan kurang fleksibel untuk data kompleks.
+    
+- **Random Forest**:
+  Mekanisme Kerja :
+  Random Forest adalah metode ensemble berbasis pohon keputusan. Setiap pohon dibangun dari subset acak data dan 
+  fitur (bagging). Prediksi akhir ditentukan dengan voting mayoritas dari semua pohon.Random Forest mengurangi 
+  varian (overfitting) yang tinggi pada pohon tunggal dengan mengombinasikan banyak pohon (bagging), sehingga 
+  menyeimbangkan bias dan varian.
+  * Kelebihan: Tahan terhadap overfitting, dapat menangani data non-linear dan fitur penting bisa 
+  diinterpretasikan.
+  * Kekurangan: Lebih lambat dibanding model linier dan kurang efisien dalam hal memori.
 
-### Tuning Parameter (GridSearch):
-Beberapa parameter Random Forest dioptimasi menggunakan Grid Search:
-- `n_estimators`: [100, 200]
-- `max_depth`: [4, 6, 8]
-- `min_samples_split`: [2, 4]
+  Model Random Forest ini menggunakan konfigurasi default tanpa penyesuaian hyperparameter khusus, dengan 
+  beberapa parameter dasar sebagai berikut:
+  * n_estimators=100 (default): Jumlah pohon keputusan dalam hutan.
+  * random_state=42: Menjamin hasil pelatihan yang konsisten.
+    
+- **XGBoost**:
+  Mekanisme Kerja:
+  XGBoost adalah model gradient boosting yang membangun model secara bertahap. Setiap model baru fokus 
+  memperbaiki kesalahan dari model sebelumnya. XGBoost mengoptimasi fungsi loss menggunakan pendekatan gradien. 
+  XGBoost umumnya memiliki bias rendah, namun perlu regularisasi agar tidak overfit. XGBoost bekerja dengan cara 
+  boosting di mana model dibangun secara berurutan, setiap model baru berupaya memperbaiki kesalahan model 
+  sebelumnya melalui optimasi fungsi loss dengan pendekatan gradient descent.
+  * Kelebihan: Menangani missing value, Bisa menangani fitur yang tidak terurut dan kompleksitas tinggi, serta 
+    sangat kuat untuk berbagai jenis data.
+  * Kekurangan: Lebih kompleks, tuning parameter memerlukan waktu lebih banyak.
+
+  Model XGBoost menggunakan konfigurasi default dengan beberapa parameter dasar sebagai berikut:
+  * n_estimators=100: Jumlah pohon boosting yang digunakan.
+  * use_label_encoder=False: Untuk menonaktifkan peringatan dari versi terbaru XGBoost.
+  * eval_metric='logloss': Fungsi evaluasi loss yang digunakan untuk klasifikasi.
+  * random_state=42: Menjaga konsistensi hasil pelatihan.
+  
+- **XGBoost + SMOTE**:
+  Mekanisme Kerja : 
+  Menambahkan SMOTE untuk menyeimbangkan data sebelum pelatihan. Mekanisme Kerja:
+  SMOTE (Synthetic Minority Over-sampling Technique) membuat data sintetis untuk kelas minoritas, sehingga 
+  distribusi menjadi seimbang. Model XGBoost kemudian dilatih dengan data hasil oversampling.
+  * Kelebihan: Meningkatkan recall dan performa untuk kelas minoritas karena menangani imbalance data.
+  * Kekurangan: Risiko overfitting karena data sintetis, serta waktu pelatihan bertambah.
+    
+  Selain itu, untuk meningkatkan performa dan menghindari overfitting, beberapa hyperparameter penting pada 
+  XGBoost, yaitu:
+  * n_estimators = 100: Jumlah total pohon boosting yang dibangun, semakin banyak pohon model semakin kompleks.
+  * max_depth = 4: Batas kedalaman maksimum tiap pohon, guna mengontrol kompleksitas model agar tidak terlalu 
+    dalam dan overfit.
+  * learning_rate = 0.1: Tingkat pembelajaran yang menentukan kontribusi setiap pohon baru dalam memperbaiki 
+    kesalahan sebelumnya.
+  * subsample = 0.8: Proporsi data yang digunakan untuk membangun setiap pohon, membantu mencegah overfitting 
+    dengan sampling acak.
+  * colsample_bytree = 0.8: Proporsi fitur yang dipilih secara acak tiap pohon, menambah keberagaman model.
+  * gamma = 0: Parameter regularisasi untuk minimum pengurangan loss dalam pembuatan split.
+
+- **Random Forest + GridSearch**
+  Mekanisme kerja :
+  Hyperparameter tuning untuk mendapatkan kinerja optimal. GridSearch akan mengeksplorasi semua kombinasi 
+  hyperparameter yang diberikan, melakukan pelatihan dan evaluasi silang (cross-validation) pada setiap 
+  kombinasi, dan memilih set hyperparameter yang memberikan performa terbaik berdasarkan metrik yang diinginkan
+  * Kelebihan: Performa meningkat signifikan setelah tuning, keseimbangan recall dan precision sangat baik.
+  * Kekurangan: Proses tuning memakan waktu dan komputasi lebih berat.
+
+  Hyperparameter yang diuji meliputi:
+  * n_estimators: Jumlah pohon keputusan yang dibangun, diuji pada nilai [100, 200].
+  * max_depth: Kedalaman maksimum pohon, diuji pada nilai [4, 6, 8]. Mengontrol kompleksitas pohon untuk mencegah 
+    overfitting atau underfitting.
+  * min_samples_split: Jumlah minimum sampel yang diperlukan untuk membagi sebuah node, diuji pada nilai [2, 4]. 
+    Parameter ini mengatur kapan pohon harus melakukan split lebih lanjut, sehingga mempengaruhi ukuran dan 
+    kompleksitas pohon.
 
 ---
 
@@ -152,7 +206,12 @@ Model dievaluasi menggunakan metrik berikut:
 
 ### Confusion Matrix Model Terbaik: Random Forest (Grid Search)
 
-Untuk memberikan gambaran lebih visual terkait performa model terbaik (Random Forest dengan tuning) digunakan confusion matriks yang menunjukkan bahwa model mampu mengklasifikasikan mayoritas kelas negatif (72 benar vs 27 salah) dan positif (46 benar vs 9 salah) secara cukup akurat.
+Untuk memberikan gambaran lebih visual terkait performa model terbaik (Random Forest dengan Grid Search) digunakan confusion matriks yang menunjukkan bahwa model mampu mengklasifikasikan :
+* True Negative (TN): 72
+* False Positive (FP): 27
+* False Negative (FN): 9
+* True Positive (TP): 46
+Sehingga, dapat disimpulkan model dapat mengklasifikasikan mayoritas kelas negatif (72 benar vs 27 salah) dan positif (46 benar vs 9 salah) secara cukup akurat.
 
 > Catatan: Nilai metrik di atas merupakan hasil pada data uji setelah training dan tuning model dilakukan.
 
@@ -186,7 +245,7 @@ Meskipun algoritma lain seperti Logistic Regression dan XGBoost juga memberikan 
 - Terapkan validasi model pada dataset nyata dengan data medis lebih lengkap.
 - Integrasi sistem prediksi ini dalam bentuk aplikasi dashboard untuk klinik.
 - Uji coba metode balancing lain seperti ADASYN atau undersampling.
-- Lakukab interpretasi model lebih dalam untuk digunakan dan dipahami oleh tenaga kesehatan.
+- Lakukan interpretasi model lebih dalam untuk digunakan dan dipahami oleh tenaga kesehatan.
 
 ---
 
