@@ -105,15 +105,14 @@ Untuk membangun model prediksi, beberapa algoritma dipilih dan diuji, yaitu:
   
   **Mekanisme Kerja** :
   Random Forest adalah metode ensemble berbasis pohon keputusan. Setiap pohon dibangun dari subset acak data dan 
-  fitur (bagging). Prediksi akhir ditentukan dengan voting mayoritas dari semua pohon.Random Forest mengurangi 
+  fitur (bagging). Prediksi akhir ditentukan dengan voting mayoritas dari semua pohon. Random Forest mengurangi 
   varian (overfitting) yang tinggi pada pohon tunggal dengan mengombinasikan banyak pohon (bagging), sehingga 
   menyeimbangkan bias dan varian.
   * Kelebihan: Tahan terhadap overfitting, dapat menangani data non-linear dan fitur penting bisa 
   diinterpretasikan.
   * Kekurangan: Lebih lambat dibanding model linier dan kurang efisien dalam hal memori.
 
-  Model Random Forest ini menggunakan konfigurasi default tanpa penyesuaian hyperparameter khusus, dengan 
-  beberapa parameter dasar sebagai berikut:
+  Model Random Forest ini menggunakan konfigurasi default, dengan beberapa parameter dasar sebagai berikut:
   * n_estimators=100 (default): Jumlah pohon keputusan dalam hutan.
   * random_state=42: Menjamin hasil pelatihan yang konsisten.
     
@@ -125,7 +124,7 @@ Untuk membangun model prediksi, beberapa algoritma dipilih dan diuji, yaitu:
   XGBoost umumnya memiliki bias rendah, namun perlu regularisasi agar tidak overfit. XGBoost bekerja dengan cara 
   boosting di mana model dibangun secara berurutan, setiap model baru berupaya memperbaiki kesalahan model 
   sebelumnya melalui optimasi fungsi loss dengan pendekatan gradient descent.
-  * Kelebihan: Menangani missing value, Bisa menangani fitur yang tidak terurut dan kompleksitas tinggi, serta 
+  * Kelebihan: Menangani missing value, bisa menangani fitur yang tidak terurut dan kompleksitas tinggi, serta 
     sangat kuat untuk berbagai jenis data.
   * Kekurangan: Lebih kompleks, tuning parameter memerlukan waktu lebih banyak.
 
@@ -138,9 +137,9 @@ Untuk membangun model prediksi, beberapa algoritma dipilih dan diuji, yaitu:
 - **XGBoost + SMOTE**:
   
   **Mekanisme Kerja** : 
-  Menambahkan SMOTE untuk menyeimbangkan data sebelum pelatihan. Mekanisme Kerja:
-  SMOTE (Synthetic Minority Over-sampling Technique) membuat data sintetis untuk kelas minoritas, sehingga 
-  distribusi menjadi seimbang. Model XGBoost kemudian dilatih dengan data hasil oversampling.
+  Menambahkan SMOTE untuk menyeimbangkan data sebelum pelatihan dengan model XGBoost. SMOTE (Synthetic Minority 
+  Over-sampling Technique) membuat data sintetis untuk kelas minoritas, sehingga distribusi menjadi seimbang. 
+  Model XGBoost kemudian dilatih dengan data hasil oversampling.
   * Kelebihan: Meningkatkan recall dan performa untuk kelas minoritas karena menangani imbalance data.
   * Kekurangan: Risiko overfitting karena data sintetis, serta waktu pelatihan bertambah.
     
@@ -196,7 +195,8 @@ Model dievaluasi menggunakan metrik berikut:
   Rata-rata harmonik dari precision dan recall. Cocok digunakan ketika ada ketidakseimbangan kelas.
 
 - **AUC-ROC**  
-  AUC (Area Under the Curve) dari ROC (Receiver Operating Characteristic) menggambarkan kemampuan model dalam membedakan kelas positif dan negatif.  
+  AUC (Area Under the Curve) dari ROC (Receiver Operating Characteristic) menggambarkan kemampuan model dalam 
+  membedakan kelas positif dan negatif.  
   Semakin mendekati nilai 1, semakin baik performa klasifikasi model terhadap kedua kelas.
 
 ### Ringkasan Hasil Evaluasi
@@ -238,7 +238,7 @@ Dari hasil evaluasi, dapat diambil beberapa analisis penting, yaitu :
 
 ### Kesimpulan
 
-Proyek ini berhasil mengembangkan sistem deteksi dini diabetes menggunakan pendekatan machine learning. Dengan berbagai model yang diuji, penggunaan Random Forest dengan Grid Search hyperparameter tuning memberikan hasil paling optimal untuk prediksi diabetes pada dataset ini, khususnya dalam hal recall dan F1-score.
+Proyek ini berhasil mengembangkan sistem deteksi dini diabetes menggunakan pendekatan machine learning. Dengan berbagai model yang diuji, penggunaan Random Forest dengan Grid Search hyperparameter tuning memberikan hasil paling optimal untuk prediksi diabetes pada dataset ini.
 
 Penerapan teknik penyeimbangan data seperti SMOTE juga membantu meningkatkan performa model, terutama dalam meningkatkan recall, sehingga lebih mampu menangkap kasus positif.
 
@@ -249,7 +249,7 @@ Meskipun algoritma lain seperti Logistic Regression dan XGBoost juga memberikan 
 - Fokus pengembangan selanjutnya dapat diarahkan pada optimalisasi lebih lanjut model Random Forest, termasuk eksplorasi parameter tuning yang lebih luas atau teknik ensemble lainnya.
 - Terapkan validasi model pada dataset nyata dengan data medis lebih lengkap.
 - Integrasi sistem prediksi ini dalam bentuk aplikasi dashboard untuk klinik.
-- Uji coba metode balancing lain seperti ADASYN atau undersampling.
+- Uji coba metode balancing lain seperti undersampling.
 - Lakukan interpretasi model lebih dalam untuk digunakan dan dipahami oleh tenaga kesehatan.
 
 ---
