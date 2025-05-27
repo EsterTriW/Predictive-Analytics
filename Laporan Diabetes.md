@@ -93,6 +93,7 @@ Setiap tahapan di atas memiliki tujuan penting dalam memastikan data yang diguna
 ### Algoritma yang Digunakan
 Untuk membangun model prediksi, beberapa algoritma dipilih dan diuji, yaitu:
 - **Logistic Regression**:
+  
   **Mekanisme Kerja** :
   Logistic Regression adalah model linier untuk klasifikasi biner. Model ini menghitung probabilitas kelas 
   menggunakan fungsi sigmoid. Probabilitas tersebut kemudian dikonversi menjadi prediksi kelas. Model ini cocok 
@@ -101,6 +102,7 @@ Untuk membangun model prediksi, beberapa algoritma dipilih dan diuji, yaitu:
   * Kekurangan: Tidak menangkap hubungan non-linear dengan baik dan kurang fleksibel untuk data kompleks.
     
 - **Random Forest**:
+  
   **Mekanisme Kerja** :
   Random Forest adalah metode ensemble berbasis pohon keputusan. Setiap pohon dibangun dari subset acak data dan 
   fitur (bagging). Prediksi akhir ditentukan dengan voting mayoritas dari semua pohon.Random Forest mengurangi 
@@ -116,6 +118,7 @@ Untuk membangun model prediksi, beberapa algoritma dipilih dan diuji, yaitu:
   * random_state=42: Menjamin hasil pelatihan yang konsisten.
     
 - **XGBoost**:
+  
   **Mekanisme Kerja**:
   XGBoost adalah model gradient boosting yang membangun model secara bertahap. Setiap model baru fokus 
   memperbaiki kesalahan dari model sebelumnya. XGBoost mengoptimasi fungsi loss menggunakan pendekatan gradien. 
@@ -133,6 +136,7 @@ Untuk membangun model prediksi, beberapa algoritma dipilih dan diuji, yaitu:
   * random_state=42: Menjaga konsistensi hasil pelatihan.
   
 - **XGBoost + SMOTE**:
+  
   **Mekanisme Kerja** : 
   Menambahkan SMOTE untuk menyeimbangkan data sebelum pelatihan. Mekanisme Kerja:
   SMOTE (Synthetic Minority Over-sampling Technique) membuat data sintetis untuk kelas minoritas, sehingga 
@@ -153,6 +157,7 @@ Untuk membangun model prediksi, beberapa algoritma dipilih dan diuji, yaitu:
   * gamma = 0: Parameter regularisasi untuk minimum pengurangan loss dalam pembuatan split.
 
 - **Random Forest + GridSearch**
+  
   **Mekanisme kerja** :
   Hyperparameter tuning untuk mendapatkan kinerja optimal. GridSearch akan mengeksplorasi semua kombinasi 
   hyperparameter yang diberikan, melakukan pelatihan dan evaluasi silang (cross-validation) pada setiap 
