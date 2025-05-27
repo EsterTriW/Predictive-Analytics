@@ -204,9 +204,9 @@ Model dievaluasi menggunakan metrik berikut:
 | Model                | Accuracy | Precision | Recall | F1-Score | AUC-ROC |
 |---------------------|----------|-----------|--------|----------|---------|
 | Logistic Regression | 0.76     | 0.68      | 0.62   | 0.65     | 0.83    |
-| Random Forest       | 0.74     | 0.62      | 0.71   | 0.66     | 0.84    |
+| Random Forest       | 0.76     | 0.65      | 0.73   | 0.68     | 0.84    |
 | XGBoost             | 0.75     | 0.63      | 0.71   | 0.67     | 0.79    |
-| XGBoost + SMOTE     | 0.75     | 0.62      | 0.75   | 0.68     | 0.81    |
+| XGBoost + SMOTE     | 0.75     | 0.62      | 0.78   | 0.69     | 0.83    |
 | Random Forest (Grid)| 0.77     | 0.63      | 0.84   | 0.72     | 0.84    |
 
 ### Confusion Matrix Model Terbaik: Random Forest (Grid Search)
@@ -226,7 +226,7 @@ Sehingga, dapat disimpulkan model dapat mengklasifikasikan mayoritas kelas negat
 Dari hasil evaluasi, dapat diambil beberapa analisis penting, yaitu :
 - **Random Forest (Grid Search)** menunjukkan performa terbaik secara keseluruhan dengan akurasi tertinggi (77%) dan F1-score terbaik (0.72), menandakan keseimbangan antara precision dan recall yang lebih baik. Model ini juga memiliki recall yang sangat tinggi (0.84), yang berarti mampu mendeteksi kasus positif diabetes lebih banyak dibanding model lain. Ini penting untuk kasus medis agar meminimalkan false negative.
 
-- **XGBoost + SMOTE** memberikan peningkatan recall (0.75) dibanding XGBoost biasa (0.71), menunjukkan bahwa teknik penyeimbangan data (SMOTE) efektif dalam meningkatkan sensitivitas model terhadap kelas minoritas.
+- **XGBoost + SMOTE** memberikan peningkatan recall (0.78) dibanding XGBoost biasa (0.71), menunjukkan bahwa teknik penyeimbangan data (SMOTE) efektif dalam meningkatkan sensitivitas model terhadap kelas minoritas.
 
 - **Logistic Regression** memiliki akurasi yang cukup baik (0.76). Namun, nilai recall dan F1-score-nya masih lebih rendah dibanding Random Forest Grid, sehingga kurang optimal untuk mendeteksi semua kasus positif.
 
