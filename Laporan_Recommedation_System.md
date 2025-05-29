@@ -158,10 +158,10 @@ Untuk memahami karakteristik awal dataset, mengenali pola, outlier, dan distribu
     Nilai rating paling sering diberikan adalah 8, diikuti 7, 10, dan 5.
     
 - Menampilkan 10 pengguna paling aktif (untuk mengidentifikasi user yang paling sering memberi rating, untuk filtering dan analisis behavior.)
-  Pengguna dengan rating terbanyak ada pada user-id 11676 dengan 13602 rating.
+  * Pengguna dengan rating terbanyak ada pada user-id 11676 dengan 13602 rating.
   
 - Menampilkan 10 buku paling sering dirating (untuk mengetahui buku apa yang paling populer di dataset.)
-  Buku paling sering dirating (paling populer) ada pada ISBN 0971880107 dengan 2502 rating.
+  * Buku paling sering dirating (paling populer) ada pada ISBN 0971880107 dengan 2502 rating.
   
 - Distribusi buku berdasarkan tahun terbit (untuk mengecek apakah ada data yang tidak valid dan melihat tren jumlah buku per tahun.)
   * Terjadi peningkatan signifikan jumlah buku yang diterbitkan dari tahun 1986 hingga puncaknya sekitar tahun 2002. Namun, ada pola anomali di tahun 1999. Jumlah publikasi tahun 1999 jauh lebih rendah dibanding 1998 dan 2000. Hal tersebut disebabkan oleh kesalahan input data atau missing data di tahun tesebeut
