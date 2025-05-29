@@ -174,9 +174,9 @@ Untuk memahami karakteristik awal dataset, mengenali pola, outlier, dan distribu
   * Agatha Christie, William Shakespeare, dan Stephen King merupakan penulis dengan jumlah buku terbanyak.
 
 ---
-## Data Preprocessing
+## Data Preparation
 
-Tujuan Preprocessing:
+Tujuan Data Preparation:
 Membersihkan dan merapikan data agar siap dipakai untuk membangun model rekomendasi, mengurangi noise, menangani missing value, dan memfilter data yang relevan untuk mengurangi sparsity matrix.
 
 Langkah-langkah Preprocessing:
@@ -191,6 +191,8 @@ Langkah-langkah Preprocessing:
   * Filter pengguna aktif
   * Hanya mengambil user yang memberi lebih dari 50 rating agar data lebih stabil dan tidak terlalu sparse.
   * Menyesuaikan data buku berdasarkan hasil filter data rating yang dipakai.
+ 
+- split data menjadi train(80%) & test(20%) untuk evaluasi
 
 ---
 
