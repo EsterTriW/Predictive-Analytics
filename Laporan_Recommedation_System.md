@@ -49,6 +49,8 @@ Strategi tambahan lainnya :
 - Mengevaluasi hasil rekomendasi menggunakan metrik Precision@5 dan Recall@5.
 - Membandingkan hasil performa kedua metode untuk menentukan pendekatan yang paling sesuai.
 
+---
+
 ## Data Understanding
 
 ### 1. Sumber & Link Dataset  
@@ -109,7 +111,6 @@ Setelah proses pra-pemrosesan, data terdiri dari tiga komponen utama:
   - `Image-URL-M`            : 0
   - `Image-URL-L`            : 3
 
----
 
 ### 5. Statistik Deskriptif
 
@@ -172,6 +173,7 @@ Untuk memahami karakteristik awal dataset, mengenali pola, outlier, dan distribu
   * Harlequin, Silhouette, dan Pocket adalah tiga penerbit dengan jumlah buku terbanyak.
   * Agatha Christie, William Shakespeare, dan Stephen King merupakan penulis dengan jumlah buku terbanyak.
 
+---
 ## Data Preprocessing
 
 Tujuan Preprocessing:
@@ -352,6 +354,7 @@ Berdasarkan hasil evaluasi sistem rekomendasi menggunakan metode User-Based Coll
 
 Faktor utama penyebab rendahnya performa adalah data sparsity, cold start problem, serta keterbatasan fitur metadata yang digunakan dalam metode content-based. Untuk menangani data sparsity dan cold start problem, sudah diterapkan filtering sparsity yang mengambil hanya user dengan ≥50 rating dan top-2000 ISBN menjadikan rating matrix lebih padat, sehingga perhitungan similarity lebih stabil dan fallback Cold-Start yang menyediakan sistem rekomendasi berbasis buku paling populer, menjaga minimalisasi daftar rekomendasi kosong untuk user tanpa neighbor (CF) atau tanpa seed book (CBF).
 
+---
 ## Rekomendasi Tindak Lanjut
 
 Untuk meningkatkan performa sistem rekomendasi, berikut beberapa rekomendasi yang dapat dilakukan:
