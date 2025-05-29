@@ -261,9 +261,9 @@ Kekurangan:
 
 ---
 
-## 📈 Hasil Rekomendasi
+## Hasil Rekomendasi
 
-### 🎯 User-Based Collaborative Filtering
+### User-Based Collaborative Filtering
 
 **Rekomendasi untuk User ID `4017`:**
 
@@ -277,9 +277,9 @@ Kekurangan:
 
 ---
 
-### 📚 Content-Based Filtering
+### Content-Based Filtering
 
-#### 📌 Rekomendasi Berdasarkan ISBN `0440234743`:
+#### Rekomendasi Berdasarkan ISBN `0440234743`:
 
 | Judul Buku                           | ISBN        | Skor Kemiripan |
 |:-------------------------------------|:------------|:----------------|
@@ -291,7 +291,7 @@ Kekurangan:
 
 ---
 
-#### 📌 Rekomendasi Berdasarkan User ID `4017`:
+#### Rekomendasi Berdasarkan User ID `4017`:
 
 | Judul Buku                                                                 | ISBN        | Skor Kemiripan |
 |:---------------------------------------------------------------------------|:------------|:----------------|
