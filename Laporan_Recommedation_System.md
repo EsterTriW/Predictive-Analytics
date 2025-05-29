@@ -39,21 +39,10 @@ Solusi yang dipilih meliputi:
 1. Content-Based Filtering (CBF)
 - Metode: Menggunakan metadata buku seperti judul, genre, dan deskripsi yang diolah dengan TF-IDF Vectorizer. Kemudian dihitung cosine similarity antar buku untuk merekomendasikan buku dengan konten paling mirip.
 - Output: Top‑N daftar buku paling mirip dengan buku yang pernah disukai pengguna.
-- Kelebihan:
-  * Tidak bergantung pada data pengguna lain.
-  * Rekomendasi spesifik sesuai preferensi konten.
-- Kekurangan:
-  * Rentan menghasilkan filter bubble (konten terlalu mirip).
 
 2. User-Based Collaborative Filtering (UBCF)
 - Metode: Menghitung cosine similarity antar pengguna berdasarkan riwayat rating. Sistem merekomendasikan buku yang disukai pengguna-pengguna dengan pola preferensi serupa.
 - Output: Top‑N buku berdasarkan prediksi preferensi dari pengguna yang mirip.
-- Kelebihan:
-  * Dapat mengeksplorasi buku di luar preferensi konten pengguna.
-  * Tidak memerlukan metadata buku.
-- Kekurangan:
-  * Memerlukan data rating yang cukup.
-  * Cold-start problem untuk pengguna/item baru.
 
 Strategi tambahan lainnya :
 - Menangani data sparse dengan memfilter pengguna aktif dan buku populer berdasarkan jumlah rating minimum.
@@ -146,13 +135,30 @@ Setelah proses pra-pemrosesan, data terdiri dari tiga komponen utama:
 ## Exploratory Data Analysis
 Untuk memahami karakteristik awal dataset, mengenali pola, outlier, dan distribusi nilai yang ada sebelum masuk ke tahap preprocessing dan modeling Langkah-langkah EDA yang digunakan:
 - Menghitung jumlah pengguna dan buku (untuk mengetahui total unique user dan buku dalam dataset.)
-  Hasil : 
-- Distribusi rating buku (untuk melihat persebaran nilai rating agar mengetahui apakah data seimbang atau skewed.)
+  Hasil :
+  * Total users : 105283
+  * Total items books : 340556
+    
+- Distribusi rating buku (untuk melihat persebaran nilai rating agar mengetahui apakah data seimbang atau skewed)
+  * Rating 0 mendominasi jumlah (lebih dari 700.000 data!):
+    Ini menunjukkan banyak pengguna memberi rating 0, yang kemungkinan besar berarti “belum menilai” atau “tidak tertarik”, bukan penilaian kualitas. Ini adalah noise dan      tidak informatif untuk sistem rekomendasi akan dihapus dari data sebelum modeling.
+  * Distribusi rating 1–10 cukup normal:
+    Nilai rating paling sering diberikan adalah 8, diikuti 7, 10, dan 5.
+    
 - Menampilkan 10 pengguna paling aktif (untuk mengidentifikasi user yang paling sering memberi rating, untuk filtering dan analisis behavior.)
+  Pengguna dengan rating terbanyak ada pada user-id 11676 dengan 13602 rating.
+  
 - Menampilkan 10 buku paling sering dirating (untuk mengetahui buku apa yang paling populer di dataset.)
+  Buku paling sering dirating (paling populer) ada pada ISBN 0971880107 dengan 2502 rating.
+  
 - Distribusi buku berdasarkan tahun terbit (untuk mengecek apakah ada data yang tidak valid dan melihat tren jumlah buku per tahun.)
+  * Terjadi peningkatan signifikan jumlah buku yang diterbitkan dari tahun 1986 hingga puncaknya sekitar tahun 2002. Namun, ada pola anomali di tahun 1999. Jumlah publikasi tahun 1999 jauh lebih rendah dibanding 1998 dan 2000. Hal tersebut disebabkan oleh kesalahan input data atau missing data di tahun tesebeut
+  * Tahun 2000–2002 merupakan periode dengan jumlah publikasi tertinggi.
+  * Setelah tahun 2002, jumlah publikasi menurun drastis (mungkin karena keterbatasan data atau belum ter-update).
+    
 - Top 20 Publisher dan Author (untuk mengidentifikasi penerbit dan penulis yang paling produktif.)
-
+  * Harlequin, Silhouette, dan Pocket adalah tiga penerbit dengan jumlah buku terbanyak.
+  * Agatha Christie, William Shakespeare, dan Stephen King merupakan penulis dengan jumlah buku terbanyak.
 
 ## Data Preprocessing
 
@@ -163,8 +169,7 @@ Langkah-langkah Preprocessing:
 - Menangani missing value dan data duplikat
   * Mengisi nilai kosong di kolom Book-Author dan Publisher dengan label default.
   * Menghapus kolom gambar URL yang tidak relevan dan kolom Age user yang tidak dipakai.
-  * Menghapus rating 0 (Rating 0 tidak memberikan informasi preferensi, jadi dihapus.)
-  * Menghapus duplikasi buku
+  * Menghapus rating 0 (Rating 0 tidak memberikan informasi preferensi.)
   * Buku dengan judul sama dihapus duplikatnya untuk menjaga konsistensi.
 
 - Filter buku populer
@@ -205,13 +210,16 @@ Parameter Utama
 Kelebihan:
 - Sederhana, mudah diimplementasikan.
 - Bisa menangkap pola rating antar pengguna.
+- Dapat mengeksplorasi buku di luar preferensi konten pengguna.
+- Tidak memerlukan metadata buku.
 
 Kekurangan:
 - Cold-start problem untuk user baru.
 - Sparse data problem jika banyak rating kosong.
 - Komputasi similarity bisa mahal di dataset besar.
-
-  
+- Memerlukan data rating yang cukup.
+- Cold-start problem untuk pengguna/item baru.
+    
 ### 2. Content-Based Filtering (CBF)
 Definisi:
 Merekomendasikan buku berdasarkan kemiripan konten (judul, penulis, publisher) dengan buku-buku yang pernah disukai user.
@@ -233,6 +241,7 @@ Parameter Utama
 Kelebihan:
 - Tidak tergantung data user lain.
 - Bisa merekomendasikan item baru yang belum dirating banyak orang.
+- Rekomendasi spesifik sesuai preferensi konten.
 
 Kekurangan:
 - Terbatas pada item yang mirip secara konten.
