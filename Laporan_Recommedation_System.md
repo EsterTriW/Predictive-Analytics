@@ -60,8 +60,298 @@ Strategi tambahan lainnya :
 - Mengevaluasi hasil rekomendasi menggunakan metrik Precision@5 dan Recall@5.
 - Membandingkan hasil performa kedua metode untuk menentukan pendekatan yang paling sesuai.
 
+## Data Understanding
+
+### 1. Sumber & Link Dataset  
+Dataset yang digunakan adalah **Book-Crossing Dataset**, tersedia secara publik di:  
+- [Kaggle](https://www.kaggle.com/datasets/ruchi798/bookcrossing-dataset)   
+
+Dataset ini berisi file 'Ratings', 'Users' dan 'Books'
+
+### 2. Ukuran & Struktur Data  
+Setelah proses pra-pemrosesan, data terdiri dari tiga komponen utama:
+
+| Dataset  | Jumlah Baris | Kolom                                                        | Keterangan                                  |
+|----------|--------------|--------------------------------------------------------------|---------------------------------------------|
+| Ratings  | 1149780    | `UserID`, `ISBN`, `BookRating`                               | Rating yang diberikan pengguna terhadap buku |
+| Users    | 278858     | `UserID`, `Location`, `Age`                                  | Data demografi pengguna                      |
+| Books    | 271360      | `ISBN`, `Book-Title`, `Book-Author`, `Year-Of-Publication`, `Publisher`, `Image-URL-S`, `Image-URL-M`, `Image-URL-L` | Metadata buku                               |
+
+### 3. Penjelasan Fitur  
+
+**Ratings:**  
+- `UserID` (integer): ID unik pengguna  
+- `ISBN` (string): Kode unik buku  
+- `BookRating` (integer): Skor rating dari 1 hingga 10  
+
+**Users:**  
+- `UserID` (integer)  
+- `Location` (string): Kota atau negara pengguna  
+- `Age` (integer): Usia pengguna  
+
+**Books:**  
+- `ISBN` (string)  
+- `Book-Title` (string)  
+- `Book-Author` (string)  
+- `Year-Of-Publication` (integer)  
+- `Publisher` (string)  
+
+### 4. Missing Values dan Data Duplikat  
+* Missing Values Ratings :
+  - User-ID        0
+  - ISBN           0
+  - Book-Rating    0
+* Missing Values Users :
+  - User-ID          0
+  - Location         0
+  - Age         110762
+* Missing Values Books :
+  - ISBN                   0
+  - Book-Title             0
+  - Book-Author            2
+  - Year-Of-Publication    0
+  - Publisher              2
+  - Image-URL-S            0
+  - Image-URL-M            0
+  - Image-URL-L            3
+
+### 5. Statistik Deskriptif  
+* Statistik Deskriptif **Users**
+| Statistik     | Value         |
+|:--------------|:--------------|
+| **Count**     | 278.858 users |
+| **Mean Age**  | 34.75         |
+| **Std Age**   | 14.43         |
+| **Range Age** | 0 – 244       |
+
+* Statistik Deskriptif **Books**
+| Statistik               | Value              |
+|:------------------------|:------------------|
+| **Count**                | 271.360 books      |
+| **Unique Titles**        | 242.135            |
+| **Unique Authors**       | 102.022            |
+| **Most Frequent Author** | *Agatha Christie* (632 books) |
+| **Range Year Published** | ‘-1’ – ‘2020’      |
+
+* Statistik Deskriptif **Ratings**
+| Statistik      | Value            |
+|:----------------|:----------------|
+| **Count**       | 1.149.780 ratings |
+| **Mean Rating** | 2.87             |
+| **Std Rating**  | 3.85             |
+| **Range Rating**| 0 – 10           |
+
+---
+
+## Exploratory Data Analysis
+Untuk memahami karakteristik awal dataset, mengenali pola, outlier, dan distribusi nilai yang ada sebelum masuk ke tahap preprocessing dan modeling Langkah-langkah EDA yang digunakan:
+- Menghitung jumlah pengguna dan buku (untuk mengetahui total unique user dan buku dalam dataset.)
+  Hasil : 
+- Distribusi rating buku (untuk melihat persebaran nilai rating agar mengetahui apakah data seimbang atau skewed.)
+- Menampilkan 10 pengguna paling aktif (untuk mengidentifikasi user yang paling sering memberi rating, untuk filtering dan analisis behavior.)
+- Menampilkan 10 buku paling sering dirating (untuk mengetahui buku apa yang paling populer di dataset.)
+- Distribusi buku berdasarkan tahun terbit (untuk mengecek apakah ada data yang tidak valid dan melihat tren jumlah buku per tahun.)
+- Top 20 Publisher dan Author (untuk mengidentifikasi penerbit dan penulis yang paling produktif.)
 
 
+## Data Preprocessing
+
+Tujuan Preprocessing:
+Membersihkan dan merapikan data agar siap dipakai untuk membangun model rekomendasi, mengurangi noise, menangani missing value, dan memfilter data yang relevan untuk mengurangi sparsity matrix.
+
+Langkah-langkah Preprocessing:
+- Menangani missing value dan data duplikat
+  * Mengisi nilai kosong di kolom Book-Author dan Publisher dengan label default.
+  * Menghapus kolom gambar URL yang tidak relevan dan kolom Age user yang tidak dipakai.
+  * Menghapus rating 0 (Rating 0 tidak memberikan informasi preferensi, jadi dihapus.)
+  * Menghapus duplikasi buku
+  * Buku dengan judul sama dihapus duplikatnya untuk menjaga konsistensi.
+
+- Filter buku populer
+  * Mengambil 2000 buku dengan jumlah rating terbanyak, supaya sistem rekomendasi fokus ke buku yang lebih representatif.
+  * Filter pengguna aktif
+  * Hanya mengambil user yang memberi lebih dari 50 rating agar data lebih stabil dan tidak terlalu sparse.
+  * Menyesuaikan data buku berdasarkan hasil filter data rating yang dipakai.
+
+---
+
+## Model & Result
+Proyek ini membangun sistem rekomendasi buku dengan dua pendekatan:
+1. User-Based Collaborative Filtering (User-Based CF): merekomendasikan buku berdasarkan kesamaan preferensi antar pengguna.
+2. Content-Based Filtering (CBF): merekomendasikan buku berdasarkan kemiripan konten buku (judul, penulis, dan penerbit).
+
+Dataset yang digunakan adalah data rating buku yang telah difilter, dengan rating skala 0–10.
+
+### 1. User-Based Collaborative Filtering (User-Based CF)
+Definisi:
+Merekomendasikan buku berdasarkan kesamaan antar pengguna. Jika dua pengguna memiliki pola rating yang mirip, buku yang disukai pengguna lain bisa direkomendasikan ke pengguna target.
+
+Cara kerja User-Based Collaborative Filtering :
+- Split data menjadi train dan test.
+- Bentuk rating matrix (users × books).
+- Hitung cosine similarity antar pengguna.
+- Untuk setiap user:
+  * Cari pengguna serupa.
+  * Hitung skor prediksi untuk buku yang belum pernah dirating.
+  * Rekomendasikan buku dengan skor prediksi tertinggi.
+
+Parameter Utama
+- rating_matrix_train → matrix rating user terhadap buku (sparse)
+- user_similarity_df_train → similarity matrix antar user
+- top_n → jumlah buku yang direkomendasikan (default 5)
+- k (di evaluasi) → jumlah rekomendasi saat evaluasi precision@k, recall@k
+- max_users → jumlah user untuk proses evaluasi
+
+Kelebihan:
+- Sederhana, mudah diimplementasikan.
+- Bisa menangkap pola rating antar pengguna.
+
+Kekurangan:
+- Cold-start problem untuk user baru.
+- Sparse data problem jika banyak rating kosong.
+- Komputasi similarity bisa mahal di dataset besar.
+
+  
+### 2. Content-Based Filtering (CBF)
+Definisi:
+Merekomendasikan buku berdasarkan kemiripan konten (judul, penulis, publisher) dengan buku-buku yang pernah disukai user.
+
+Cara kerja Content-Based Filtering (CBF) :
+- Gabungkan fitur buku (judul, penulis, penerbit).
+- Vektorisasi menggunakan TF-IDF Vectorizer.
+- Hitung kemiripan antar buku menggunakan cosine similarity.
+- Untuk user, ambil buku dengan rating ≥ 7 → cari buku mirip berdasarkan similarity.
+- Rekomendasikan buku dengan skor kemiripan tertinggi.
+
+Parameter Utama
+- combined_features → gabungan fitur buku (title + author + publisher)
+- tfidf_matrix → representasi TF-IDF dari fitur gabungan
+- cosine_sim_books → similarity matrix antar buku
+- top_n → jumlah buku yang direkomendasikan (default 5)
+- k, max_users → parameter saat evaluasi
+
+Kelebihan:
+- Tidak tergantung data user lain.
+- Bisa merekomendasikan item baru yang belum dirating banyak orang.
+
+Kekurangan:
+- Terbatas pada item yang mirip secara konten.
+- Cold-start problem untuk item baru tanpa deskripsi lengkap.
+
+---
+
+## 📈 Hasil Rekomendasi
+
+### 🎯 User-Based Collaborative Filtering
+
+**Rekomendasi untuk User ID `4017`:**
+
+| Judul Buku                                                      | ISBN        | Skor Prediksi |
+|:----------------------------------------------------------------|:------------|:---------------|
+| Charlotte's Web (Trophy Newbery)                                | 0064400557  | 10.00          |
+| The Lost World                                                   | 034540288X  | 10.00          |
+| The Second Summer of the Sisterhood                              | 0385729340  | 10.00          |
+| Charlotte's Web                                                  | 059030271X  | 10.00          |
+| A Confederacy of Dunces (Evergreen Book)                         | 0802130208  | 10.00          |
+
+---
+
+### 📚 Content-Based Filtering
+
+#### 📌 Rekomendasi Berdasarkan ISBN `0440234743`:
+
+| Judul Buku                           | ISBN        | Skor Kemiripan |
+|:-------------------------------------|:------------|:----------------|
+| The Rainmaker                        | 044022165X  | 0.53             |
+| A Time to Kill                       | 0440211727  | 0.49             |
+| The Summons                          | 0440241073  | 0.47             |
+| The Street Lawyer                    | 0440225701  | 0.45             |
+| The Runaway Jury                     | 0440221471  | 0.44             |
+
+---
+
+#### 📌 Rekomendasi Berdasarkan User ID `4017`:
+
+| Judul Buku                                                                 | ISBN        | Skor Kemiripan |
+|:---------------------------------------------------------------------------|:------------|:----------------|
+| Dr. Death: A Novel                                                         | 0679459618  | 0.18             |
+| Portrait in Death                                                          | 0425189031  | 0.15             |
+| Naked in Death                                                             | 0425148297  | 0.15             |
+| Prodigal Summer: A Novel                                                   | 0060959037  | 0.15             |
+| The Professor and the Madman: A Tale of Murder, Insanity, and the Making of The Oxford English Dictionary | 006099486X  | 0.51             |
+
+---
+
+## Evaluasi Sistem Rekomendasi
+Pada proyek ini, evaluasi performa sistem rekomendasi dilakukan menggunakan dua metrik utama, yaitu Precision@5 dan Recall@5.
+
+Dalam sistem rekomendasi, sangat penting untuk mengetahui seberapa relevan item yang direkomendasikan kepada pengguna. Oleh karena itu, precision dan recall digunakan untuk mengukur kualitas hasil rekomendasi:
+
+- Precision@k digunakan untuk mengetahui proporsi item yang relevan dari total item yang direkomendasikan di posisi teratas.
+Rumus :  (Jumlah item relevan di top-k rekomendasi) / k
+- Recall@k digunakan untuk mengetahui seberapa banyak item relevan yang berhasil ditemukan dari seluruh item relevan yang tersedia.
+Rumus : (Jumlah item relevan di top-k rekomendasi) / (Jumlah total item relevan untuk user)
+
+Kedua metrik ini dipilih karena dapat memberikan gambaran menyeluruh mengenai kualitas rekomendasi yang diberikan, khususnya ketika jumlah data relevan dalam dataset tergolong sedikit (data sparsity).
+
+---
+
+### 📊 Hasil Evaluasi  
+
+Berikut hasil evaluasi yang diperoleh dari sistem rekomendasi yang dikembangkan:
+
+| Metode               | Precision@5 | Recall@5 |
+|:--------------------|:------------|:----------|
+| User-Based CF        | 0.009        | 0.002     |
+| Content-Based CF     | 0.032        | 0.108     |
+
+---
+
+### 📌 Analisis Hasil  
+
+Berdasarkan hasil evaluasi di atas, dapat disimpulkan bahwa nilai precision dan recall dari kedua metode masih tergolong rendah. Beberapa faktor yang menyebabkan hal ini antara lain:
+
+1. **Data Sparsity**  
+   Dataset Book-Crossing memiliki tingkat sparsity yang tinggi, di mana sebagian besar pengguna hanya memberikan sedikit rating. Hal ini menyebabkan overlap antara preferensi pengguna sangat kecil, sehingga metode User-Based Collaborative Filtering sulit menemukan user yang benar-benar mirip.
+
+2. **Cold Start Problem**  
+   Terdapat banyak buku dan pengguna dengan jumlah rating yang minim. Kondisi ini menyulitkan sistem dalam menghasilkan rekomendasi yang akurat karena kurangnya data historis.
+
+3. **Top-K Recommendation**  
+   Karena sistem hanya merekomendasikan 5 item teratas dari sekian banyak buku, peluang item relevan untuk muncul di posisi tersebut menjadi sangat kecil.
+
+4. **Keterbatasan Metadata**  
+   Pada metode Content-Based, informasi buku yang digunakan hanya terbatas pada Title dan Author. Akibatnya, nilai similarity antar item juga terbatas dan kurang bervariasi.
+
+---
+
+## Kesimpulan
+
+Berdasarkan hasil evaluasi sistem rekomendasi menggunakan metode User-Based Collaborative Filtering dan Content-Based Filtering, diperoleh bahwa nilai precision dan recall pada top-5 rekomendasi masih relatif rendah. Hal ini menunjukkan bahwa sistem belum mampu memberikan rekomendasi yang sangat relevan dan memadai bagi pengguna. Faktor utama penyebab rendahnya performa adalah data sparsity, cold start problem, serta keterbatasan fitur metadata yang digunakan dalam metode content-based.
+
+Meski demikian, metode Content-Based Filtering menunjukkan performa yang sedikit lebih baik dibandingkan User-Based CF, terutama pada metrik recall. Ini mengindikasikan bahwa informasi konten buku walaupun terbatas masih dapat membantu dalam memberikan rekomendasi yang relevan.
+
+## Rekomendasi Tindak Lanjut
+
+Untuk meningkatkan performa sistem rekomendasi, berikut beberapa rekomendasi yang dapat dilakukan:
+
+1. **Perluasan Metadata Buku**  
+   Menambahkan fitur metadata yang lebih kaya seperti genre, sinopsis, tahun terbit, dan penerbit agar similarity antar item dapat dihitung dengan lebih akurat.
+
+2. **Implementasi Hybrid Recommendation System**  
+   Menggabungkan metode User-Based Collaborative Filtering dan Content-Based Filtering untuk mengatasi kelemahan masing-masing metode.
+
+3. **Penggunaan Teknik Matrix Factorization**  
+   Menerapkan teknik seperti Singular Value Decomposition (SVD) atau Alternating Least Squares (ALS) untuk menangani masalah sparsity dan meningkatkan akurasi prediksi.
+
+4. **Pengelolaan Data Cold Start**  
+   Mengadopsi strategi khusus untuk menangani pengguna atau item baru dengan sedikit data, seperti rekomendasi berbasis popularitas atau menggunakan metadata.
+
+5. **Eksperimen dengan Parameter dan Metode Evaluasi**  
+   Melakukan tuning parameter model dan memperluas metrik evaluasi untuk memperoleh gambaran performa yang lebih komprehensif.
+
+Dengan langkah-langkah tersebut, diharapkan sistem rekomendasi dapat memberikan hasil yang lebih relevan dan memuaskan pengguna.
+---
 
 
 Referensi:
