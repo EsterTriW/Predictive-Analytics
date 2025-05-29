@@ -2,7 +2,7 @@
 ## Judul proyek : Implementasi Sistem Rekomendasi Buku Berbasis User-Based Collaborative Filtering dan Content-Based Filtering
 ## Ditulis oleh : Ester Tri Wahyuningsih -  MC002D5X0841
 
-## Domain Proyek
+## Project Overview
 ### Latar Belakang
 Di era digital saat ini, kemajuan teknologi informasi telah mengubah cara masyarakat dalam mengakses dan mengonsumsi konten literasi. Platform seperti Goodreads, Amazon, dan Google Books menyediakan jutaan judul buku dari berbagai kategori yang dapat diakses kapan saja. Namun, tingginya jumlah pilihan justru menimbulkan masalah baru, yaitu information overload, di mana pengguna kesulitan menemukan buku yang sesuai dengan minat dan kebutuhannya secara efisien (Resnick & Varian, 1997).
 
@@ -309,15 +309,15 @@ Pada proyek ini, evaluasi performa sistem rekomendasi dilakukan menggunakan dua 
 Dalam sistem rekomendasi, sangat penting untuk mengetahui seberapa relevan item yang direkomendasikan kepada pengguna. Oleh karena itu, precision dan recall digunakan untuk mengukur kualitas hasil rekomendasi:
 
 - Precision@k digunakan untuk mengetahui proporsi item yang relevan dari total item yang direkomendasikan di posisi teratas.
-Rumus :  (Jumlah item relevan di top-k rekomendasi) / k
+  * Rumus :  (Jumlah item relevan di top-k rekomendasi) / k
 - Recall@k digunakan untuk mengetahui seberapa banyak item relevan yang berhasil ditemukan dari seluruh item relevan yang tersedia.
-Rumus : (Jumlah item relevan di top-k rekomendasi) / (Jumlah total item relevan untuk user)
+  * Rumus : (Jumlah item relevan di top-k rekomendasi) / (Jumlah total item relevan untuk user)
 
 Kedua metrik ini dipilih karena dapat memberikan gambaran menyeluruh mengenai kualitas rekomendasi yang diberikan, khususnya ketika jumlah data relevan dalam dataset tergolong sedikit (data sparsity).
 
 ---
 
-### 📊 Hasil Evaluasi  
+### Hasil Evaluasi  
 
 Berikut hasil evaluasi yang diperoleh dari sistem rekomendasi yang dikembangkan:
 
@@ -328,7 +328,7 @@ Berikut hasil evaluasi yang diperoleh dari sistem rekomendasi yang dikembangkan:
 
 ---
 
-### 📌 Analisis Hasil  
+### Analisis Hasil  
 
 Berdasarkan hasil evaluasi di atas, dapat disimpulkan bahwa nilai precision dan recall dari kedua metode masih tergolong rendah. Beberapa faktor yang menyebabkan hal ini antara lain:
 
@@ -348,9 +348,9 @@ Berdasarkan hasil evaluasi di atas, dapat disimpulkan bahwa nilai precision dan 
 
 ## Kesimpulan
 
-Berdasarkan hasil evaluasi sistem rekomendasi menggunakan metode User-Based Collaborative Filtering dan Content-Based Filtering, diperoleh bahwa nilai precision dan recall pada top-5 rekomendasi masih relatif rendah. Hal ini menunjukkan bahwa sistem belum mampu memberikan rekomendasi yang sangat relevan dan memadai bagi pengguna. Faktor utama penyebab rendahnya performa adalah data sparsity, cold start problem, serta keterbatasan fitur metadata yang digunakan dalam metode content-based.
+Berdasarkan hasil evaluasi sistem rekomendasi menggunakan metode User-Based Collaborative Filtering dan Content-Based Filtering, diperoleh bahwa nilai precision dan recall pada top-5 rekomendasi masih relatif rendah. Hal ini menunjukkan bahwa sistem belum mampu memberikan rekomendasi yang sangat relevan dan memadai bagi pengguna. Meski demikian, metode Content-Based Filtering menunjukkan performa yang sedikit lebih baik dibandingkan User-Based CF, terutama pada metrik recall. Ini mengindikasikan bahwa informasi konten buku walaupun terbatas masih dapat membantu dalam memberikan rekomendasi yang relevan.
 
-Meski demikian, metode Content-Based Filtering menunjukkan performa yang sedikit lebih baik dibandingkan User-Based CF, terutama pada metrik recall. Ini mengindikasikan bahwa informasi konten buku walaupun terbatas masih dapat membantu dalam memberikan rekomendasi yang relevan.
+Faktor utama penyebab rendahnya performa adalah data sparsity, cold start problem, serta keterbatasan fitur metadata yang digunakan dalam metode content-based. Untuk menangani data sparsity dan cold start problem, sudah diterapkan filtering sparsity yang mengambil hanya user dengan ≥50 rating dan top-2000 ISBN menjadikan rating matrix lebih padat, sehingga perhitungan similarity lebih stabil dan fallback Cold-Start yang menyediakan sistem rekomendasi berbasis buku paling populer, menjaga minimalisasi daftar rekomendasi kosong untuk user tanpa neighbor (CF) atau tanpa seed book (CBF).
 
 ## Rekomendasi Tindak Lanjut
 
