@@ -8,12 +8,9 @@ Di era digital saat ini, kemajuan teknologi informasi telah mengubah cara masyar
 
 Salah satu solusi untuk permasalahan ini adalah penerapan sistem rekomendasi (recommender system). Sistem ini berperan penting dalam menyaring informasi dan memberikan rekomendasi personal berdasarkan preferensi atau perilaku pengguna. Tidak hanya di bidang e-commerce dan layanan hiburan seperti Netflix dan Spotify, sistem rekomendasi juga memiliki potensi besar di sektor literasi digital untuk meningkatkan keterlibatan dan kepuasan pengguna (Ricci et al., 2015).
 
-Dalam sistem rekomendasi buku, terdapat dua metode utama yang banyak digunakan, yaitu:
-
-- Collaborative Filtering, yang memanfaatkan pola perilaku pengguna lain dengan preferensi serupa.
-- Content-Based Filtering, yang memberikan rekomendasi berdasarkan kemiripan atribut konten buku, seperti genre, deskripsi, dan penulis.
-
 Meski demikian, tantangan utama dalam pengembangan sistem rekomendasi adalah sparsity problem, yaitu kondisi di mana data interaksi pengguna dan buku cenderung jarang (Jarada et al., 2022). Selain itu, menentukan metode rekomendasi yang paling efektif untuk konteks literasi digital juga menjadi persoalan yang menarik untuk diteliti.
+
+Oleh karena itu, diperlukan pengembangan sistem rekomendasi buku yang efektif dan adaptif dengan pendekatan yang sesuai. Proyek ini bertujuan untuk membangun dan membandingkan dua metode rekomendasi populer, yaitu User-Based Collaborative Filtering dan Content-Based Filtering, guna mengatasi masalah sparsity serta meningkatkan relevansi rekomendasi bagi pengguna platform literasi digital.
 
 ### Tujuan Proyek
 Proyek ini penting dilakukan untuk 
