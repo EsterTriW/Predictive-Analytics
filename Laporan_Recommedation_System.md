@@ -85,50 +85,62 @@ Setelah proses pra-pemrosesan, data terdiri dari tiga komponen utama:
 - `Year-Of-Publication` (integer)  
 - `Publisher` (string)  
 
-### 4. Missing Values dan Data Duplikat  
-* Missing Values Ratings :
-  - User-ID        0
-  - ISBN           0
-  - Book-Rating    0
-* Missing Values Users :
-  - User-ID          0
-  - Location         0
-  - Age         110762
-* Missing Values Books :
-  - ISBN                   0
-  - Book-Title             0
-  - Book-Author            2
-  - Year-Of-Publication    0
-  - Publisher              2
-  - Image-URL-S            0
-  - Image-URL-M            0
-  - Image-URL-L            3
+### 4. Missing Values dan Data Duplikat
 
-### 5. Statistik Deskriptif  
-* Statistik Deskriptif **Users**
+**Missing Values:**
+
+- **Ratings**
+  - `User-ID`        : 0
+  - `ISBN`           : 0
+  - `Book-Rating`    : 0
+
+- **Users**
+  - `User-ID`        : 0
+  - `Location`       : 0
+  - `Age`            : 110.762
+
+- **Books**
+  - `ISBN`                   : 0
+  - `Book-Title`             : 0
+  - `Book-Author`            : 2
+  - `Year-Of-Publication`    : 0
+  - `Publisher`              : 2
+  - `Image-URL-S`            : 0
+  - `Image-URL-M`            : 0
+  - `Image-URL-L`            : 3
+
+---
+
+### 5. Statistik Deskriptif
+
+#### Statistik Deskriptif **Users**
+
 | Statistik     | Value         |
-|:--------------|:--------------|
-| **Count**     | 278.858 users |
-| **Mean Age**  | 34.75         |
-| **Std Age**   | 14.43         |
-| **Range Age** | 0 – 244       |
+|---------------|---------------|
+| Count         | 278.858 users |
+| Mean Age      | 34.75         |
+| Std Age       | 14.43         |
+| Range Age     | 0 – 244       |
 
-* Statistik Deskriptif **Books**
-| Statistik               | Value              |
-|:------------------------|:------------------|
-| **Count**                | 271.360 books      |
-| **Unique Titles**        | 242.135            |
-| **Unique Authors**       | 102.022            |
-| **Most Frequent Author** | *Agatha Christie* (632 books) |
-| **Range Year Published** | ‘-1’ – ‘2020’      |
+#### Statistik Deskriptif **Books**
 
-* Statistik Deskriptif **Ratings**
-| Statistik      | Value            |
-|:----------------|:----------------|
-| **Count**       | 1.149.780 ratings |
-| **Mean Rating** | 2.87             |
-| **Std Rating**  | 3.85             |
-| **Range Rating**| 0 – 10           |
+| Statistik               | Value                    |
+|-------------------------|--------------------------|
+| Count                   | 271.360 books            |
+| Unique Titles           | 242.135                  |
+| Unique Authors          | 102.022                  |
+| Most Frequent Author    | *Agatha Christie* (632 books) |
+| Range Year Published    | ‘-1’ – ‘2020’            |
+
+#### Statistik Deskriptif **Ratings**
+
+| Statistik       | Value             |
+|-----------------|-------------------|
+| Count           | 1.149.780 ratings |
+| Mean Rating     | 2.87              |
+| Std Rating      | 3.85              |
+| Range Rating    | 0 – 10            |
+
 
 ---
 
