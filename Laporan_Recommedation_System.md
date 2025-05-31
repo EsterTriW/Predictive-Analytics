@@ -200,8 +200,8 @@ Langkah-langkah Data Preparation:
   Untuk pendekatan Content-Based Filtering, dilakukan ekstraksi fitur sebagai berikut:
   * Fitur gabungan dibuat dari kolom Book-Title, Book-Author, dan Publisher.
   * Digunakan teknik TF-IDF Vectorization (Term Frequency-Inverse Document Frequency), yaitu metode representasi teks menjadi vektor numerik:
-    ** TF (Term Frequency): Mengukur seberapa sering kata muncul dalam satu buku.
-    ** IDF (Inverse Document Frequency): Mengukur keunikan kata di seluruh korpus buku.
+    * TF (Term Frequency): Mengukur seberapa sering kata muncul dalam satu buku.
+    * IDF (Inverse Document Frequency): Mengukur keunikan kata di seluruh korpus buku.
 * Dengan TF-IDF, kata-kata yang umum di semua buku (seperti "the", "book", "author") akan memiliki bobot rendah, sementara kata-kata yang unik akan diberi bobot lebih tinggi.
 * Hasil dari proses ini adalah matriks fitur vektor yang digunakan untuk menghitung kemiripan antar buku berdasarkan konten.
 
