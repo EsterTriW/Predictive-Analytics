@@ -78,14 +78,18 @@ Setelah proses pra-pemrosesan, data terdiri dari tiga komponen utama:
 **Users:**  
 - `UserID` (integer)  
 - `Location` (string): Kota atau negara pengguna  
-- `Age` (integer): Usia pengguna  
+- `Age` (float): Usia pengguna  
 
 **Books:**  
-- `ISBN` (string)  
-- `Book-Title` (string)  
-- `Book-Author` (string)  
-- `Year-Of-Publication` (integer)  
-- `Publisher` (string)  
+- `ISBN` (string) : Kode unik buku (International Standard Book Number)
+- `Book-Title` (string): Judul buku
+- `Book-Author` (string): Nama penulis buku
+- `Year-Of-Publication` (string): Tahun terbit buku
+- `Publisher` (string): Nama penerbit
+- `Image-URL-S` (string): Link ke thumbnail (ukuran kecil) cover buku
+- `Image-URL-M` (string): Link ke gambar cover buku ukuran sedang
+- `Image-URL-L` (string): Link ke gambar cover buku ukuran besar
+
 
 ### 4. Missing Values dan Data Duplikat
 
@@ -179,21 +183,32 @@ Untuk memahami karakteristik awal dataset, mengenali pola, outlier, dan distribu
 Tujuan Data Preparation:
 Membersihkan dan merapikan data agar siap dipakai untuk membangun model rekomendasi, mengurangi noise, menangani missing value, dan memfilter data yang relevan untuk mengurangi sparsity matrix.
 
-Langkah-langkah Preprocessing:
+Langkah-langkah Data Preparation:
 - Menangani missing value dan data duplikat
   * Mengisi nilai kosong di kolom Book-Author dan Publisher dengan label default.
-  * Menghapus kolom gambar URL yang tidak relevan dan kolom Age user yang tidak dipakai.
+  * Menghapus kolom Image-URL-S, Image-URL-M, dan Image-URL-L yang tidak relevan dan tidak dipakai.
+  * Menghapus kolom Age dari dataset Users karena memiliki banyak nilai anomali dan tidak digunakan dalam sistem rekomendasi ini.
   * Menghapus rating 0 (Rating 0 tidak memberikan informasi preferensi.)
   * Buku dengan judul sama dihapus duplikatnya untuk menjaga konsistensi.
 
-- Filter buku populer
-  * Mengambil 2000 buku dengan jumlah rating terbanyak, supaya sistem rekomendasi fokus ke buku yang lebih representatif.
-  * Filter pengguna aktif
-  * Hanya mengambil user yang memberi lebih dari 50 rating agar data lebih stabil dan tidak terlalu sparse.
-  * Menyesuaikan data buku berdasarkan hasil filter data rating yang dipakai.
- 
-- split data menjadi train(80%) & test(20%) untuk evaluasi
+- Filter User dan Item
+  * Filter pengguna aktif: Hanya mengambil user yang memberi lebih dari 50 rating, agar data lebih stabil dan tidak terlalu sparse.
+  * Filter buku populer: Mengambil 2000 buku dengan jumlah rating terbanyak, supaya sistem fokus pada buku yang paling banyak dikenal dan dinilai.
+  * Data buku dan user kemudian disesuaikan (merge) berdasarkan hasil filter dari dataset rating yang digunakan, agar hanya data yang relevan yang masuk ke proses modeling.
+    
+- Ekstraksi Fitur untuk Content-Based Filtering (CBF)
+  Untuk pendekatan Content-Based Filtering, dilakukan ekstraksi fitur sebagai berikut:
+  * Fitur gabungan dibuat dari kolom Book-Title, Book-Author, dan Publisher.
+  * Digunakan teknik TF-IDF Vectorization (Term Frequency-Inverse Document Frequency), yaitu metode representasi teks menjadi vektor numerik:
+    ** TF (Term Frequency): Mengukur seberapa sering kata muncul dalam satu buku.
+    ** IDF (Inverse Document Frequency): Mengukur keunikan kata di seluruh korpus buku.
+* Dengan TF-IDF, kata-kata yang umum di semua buku (seperti "the", "book", "author") akan memiliki bobot rendah, sementara kata-kata yang unik akan diberi bobot lebih tinggi.
+* Hasil dari proses ini adalah matriks fitur vektor yang digunakan untuk menghitung kemiripan antar buku berdasarkan konten.
 
+- Pembagian Data (Train-Test Split)untuk evaluasi
+* Dataset hasil preprocessing dibagi menjadi dua: 80% untuk data latih dan 20% untuk data uji
+* Pembagian ini penting untuk mengevaluasi performa sistem rekomendasi secara adil dan menghindari overfitting.
+  
 ---
 
 ## Model & Result
@@ -241,15 +256,12 @@ Definisi:
 Merekomendasikan buku berdasarkan kemiripan konten (judul, penulis, publisher) dengan buku-buku yang pernah disukai user.
 
 Cara kerja Content-Based Filtering (CBF) :
-- Gabungkan fitur buku (judul, penulis, penerbit).
-- Vektorisasi menggunakan TF-IDF Vectorizer.
 - Hitung kemiripan antar buku menggunakan cosine similarity.
 - Untuk user, ambil buku dengan rating ≥ 7 → cari buku mirip berdasarkan similarity.
 - Rekomendasikan buku dengan skor kemiripan tertinggi.
 
 Parameter Utama
 - combined_features → gabungan fitur buku (title + author + publisher)
-- tfidf_matrix → representasi TF-IDF dari fitur gabungan
 - cosine_sim_books → similarity matrix antar buku
 - top_n → jumlah buku yang direkomendasikan (default 5)
 - k, max_users → parameter saat evaluasi
